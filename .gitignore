@@ -1,0 +1,20 @@
+# Secrets
+.env
+
+# Node
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+*.log
+
+# Go
+backend/server
+backend/bin/
+
+# air live-reload artifacts
+backend/tmp/
+backend/build-errors.log
+
+# Editor / OS / local tooling
+.DS_Store
+.claude/

@@ -1,0 +1,26 @@
+# Live-reload config for `air` (https://github.com/air-verse/air).
+# Watches .go files and rebuilds + restarts the server on change.
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  # Build the server into ./tmp on each change.
+  cmd = "go build -o ./tmp/server ./cmd/server"
+  entrypoint = ["./tmp/server"]
+  # Recompile when these change.
+  include_ext = ["go"]
+  # Don't watch generated/output dirs.
+  exclude_dir = ["tmp"]
+  # Debounce rapid saves (ms).
+  delay = 500
+  # Keep the last good binary running if a build fails.
+  stop_on_error = true
+  # Surface build errors in the terminal.
+  log = "build-errors.log"
+
+[misc]
+  # Remove ./tmp on exit.
+  clean_on_exit = true
+
+[screen]
+  clear_on_rebuild = false
