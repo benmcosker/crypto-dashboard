@@ -1,5 +1,8 @@
 # Crypto Dashboard
 
+[![CI](https://github.com/benmcosker/crypto-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/benmcosker/crypto-dashboard/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A real-time cryptocurrency market dashboard built on a **Go** backend and a **React + Material UI** frontend, powered by the live [CoinGecko API](https://docs.coingecko.com/).
 
 It surfaces five live metrics, all filterable by time period (**Today / Last week / Last month / Last quarter**):
@@ -313,6 +316,9 @@ curl "http://localhost:8080/api/global"
 crypto-dashboard/
 ├── .env                       # COINGECKO_API_KEY (gitignored)
 ├── .env.example               # template
+├── .github/workflows/ci.yml   # CI: go test + frontend build/test
+├── LICENSE                    # MIT
+├── Makefile                   # dev / test / build tasks
 ├── README.md
 ├── CLAUDE.md                  # condensed project notes
 │
@@ -366,4 +372,20 @@ filter applies where it's meaningful and the rest stay live:
 | `bind: address already in use` | Port 8080 (or 5173) is taken. Free it: `lsof -ti tcp:8080 \| xargs kill -9`, or set a different `PORT`. |
 | Frontend can't reach the API | In dev, the Vite proxy handles `/api`. If you changed ports, set `VITE_API_BASE` in `frontend/.env`. |
 | Prices look stale | Responses are cached for 60s server-side and the table auto-refreshes each minute. |
-```
+
+---
+
+## Continuous integration
+
+Every push and pull request to `main` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
+
+- **Backend** — `go vet`, `go build`, and `go test ./... -race`.
+- **Frontend** — `npm ci`, `npm run build` (type-check + bundle), and `npm test`.
+
+Run the same checks locally with `make test` (or `make build`).
+
+---
+
+## License
+
+Released under the [MIT License](LICENSE).
