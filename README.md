@@ -386,6 +386,12 @@ Run the same checks locally with `make test` (or `make build`).
 
 ---
 
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for local
+setup, conventions, and the PR workflow. Dependencies are kept current by
+[Dependabot](.github/dependabot.yml).
+
 ## License
 
 Released under the [MIT License](LICENSE).
