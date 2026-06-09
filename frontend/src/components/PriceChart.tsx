@@ -14,7 +14,7 @@ interface Props {
 // Metric 3: price-history chart for the selected coin. The period filter maps to
 // the day range (Today=1, week=7, month=30, quarter=90).
 export default function PriceChart({ coinId, period }: Props) {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: ["chart", coinId, period],
     queryFn: () => fetchChart(coinId, period),
   });
@@ -28,6 +28,8 @@ export default function PriceChart({ coinId, period }: Props) {
       subtitle={`${coinId.toUpperCase()} · ${periodLabel}`}
       isLoading={isLoading}
       error={error}
+      onRetry={() => refetch()}
+      isRefetching={isRefetching}
     >
       {points.length > 1 ? (
         <Box sx={{ width: "100%" }}>

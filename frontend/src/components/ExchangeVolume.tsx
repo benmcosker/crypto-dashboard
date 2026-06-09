@@ -13,7 +13,7 @@ import WidgetCard from "./WidgetCard";
 // Metric 5: exchange volume (24h BTC) — shows where liquidity is concentrated.
 // /exchanges is a live snapshot, independent of the period filter.
 export default function ExchangeVolume() {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: ["exchanges"],
     queryFn: fetchExchanges,
   });
@@ -27,6 +27,8 @@ export default function ExchangeVolume() {
       subtitle="24h trade volume (BTC)"
       isLoading={isLoading}
       error={error}
+      onRetry={() => refetch()}
+      isRefetching={isRefetching}
     >
       <Stack spacing={1.5}>
         {exchanges.map((ex) => (

@@ -21,7 +21,7 @@ interface Props {
 // Metric 4: trending coins. /search/trending is a live snapshot, independent of
 // the period filter.
 export default function Trending({ onSelectCoin }: Props) {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: ["trending"],
     queryFn: fetchTrending,
   });
@@ -32,6 +32,8 @@ export default function Trending({ onSelectCoin }: Props) {
       subtitle="Most searched right now"
       isLoading={isLoading}
       error={error}
+      onRetry={() => refetch()}
+      isRefetching={isRefetching}
       action={<WhatshotIcon color="secondary" />}
     >
       <List dense disablePadding>

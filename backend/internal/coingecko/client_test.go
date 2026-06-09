@@ -2,6 +2,7 @@ package coingecko
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -93,6 +94,19 @@ func TestGetPropagatesUpstreamError(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "429") {
 		t.Errorf("error should mention status code: %v", err)
+	}
+
+	// It should be a typed *APIError carrying the status code and (for logging)
+	// the upstream body.
+	var apiErr *APIError
+	if !errors.As(err, &apiErr) {
+		t.Fatalf("expected *APIError, got %T", err)
+	}
+	if apiErr.StatusCode != http.StatusTooManyRequests {
+		t.Errorf("StatusCode = %d, want 429", apiErr.StatusCode)
+	}
+	if !strings.Contains(apiErr.Body, "rate limited") {
+		t.Errorf("Body = %q, want it to retain upstream detail for logging", apiErr.Body)
 	}
 }
 

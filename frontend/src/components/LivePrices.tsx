@@ -30,7 +30,7 @@ interface Props {
 // Metric 1 (Live Price + change) plus the 7-day sparkline. Rows are clickable to
 // drive the price-history chart (metric 3).
 export default function LivePrices({ period, selectedCoin, onSelectCoin }: Props) {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: ["markets"],
     queryFn: fetchMarkets,
     refetchInterval: 60_000,
@@ -44,6 +44,8 @@ export default function LivePrices({ period, selectedCoin, onSelectCoin }: Props
       subtitle={`Top coins · ${PERIOD_CHANGE_LABEL[period]} change · click a row to chart it`}
       isLoading={isLoading}
       error={error}
+      onRetry={() => refetch()}
+      isRefetching={isRefetching}
     >
       <Box sx={{ maxHeight: 420, overflow: "auto" }}>
         <Table size="small" stickyHeader>

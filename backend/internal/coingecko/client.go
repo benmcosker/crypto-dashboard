@@ -55,9 +55,26 @@ func (c *Client) get(ctx context.Context, path string, query url.Values) ([]byte
 		return nil, err
 	}
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("coingecko %s returned %d: %s", path, resp.StatusCode, truncate(body, 200))
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Endpoint:   path,
+			Body:       truncate(body, 200),
+		}
 	}
 	return body, nil
+}
+
+// APIError represents a non-2xx response from CoinGecko. Handlers inspect
+// StatusCode to decide how to respond to the frontend, while Body is kept for
+// server-side logging only (it is never forwarded to clients).
+type APIError struct {
+	StatusCode int
+	Endpoint   string
+	Body       string
+}
+
+func (e *APIError) Error() string {
+	return fmt.Sprintf("coingecko %s returned %d", e.Endpoint, e.StatusCode)
 }
 
 func truncate(b []byte, n int) string {

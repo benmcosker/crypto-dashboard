@@ -1,6 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { Box, Card, CardContent, Typography } from "@mui/material";
-import { fetchGlobal } from "../api/client";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Skeleton,
+  Typography,
+} from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { ApiError, fetchGlobal } from "../api/client";
 import { formatCompact } from "../utils/format";
 import PercentChange from "./PercentChange";
 
@@ -33,21 +43,51 @@ function StatCard({ label, value, change }: Stat) {
 // Metric 2: Market cap & dominance — high-level "state of the market".
 // /global is a live snapshot, so it is independent of the period filter.
 export default function MarketOverview() {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: ["global"],
     queryFn: fetchGlobal,
   });
 
-  if (isLoading || error || !data) {
-    // Render placeholders so the row keeps its height while loading.
+  if (error) {
+    const message =
+      error instanceof ApiError || error instanceof Error
+        ? error.message
+        : "Couldn't load the market overview.";
+    const severity = error instanceof ApiError && error.isRateLimited ? "warning" : "error";
     return (
-      <Card>
-        <CardContent>
-          <Typography color="text.secondary">
-            {error ? "Failed to load market overview" : "Loading market overview…"}
-          </Typography>
-        </CardContent>
-      </Card>
+      <Alert
+        severity={severity}
+        action={
+          <Button
+            color="inherit"
+            size="small"
+            startIcon={<RefreshIcon />}
+            onClick={() => refetch()}
+            disabled={isRefetching}
+          >
+            {isRefetching ? "Retrying…" : "Retry"}
+          </Button>
+        }
+      >
+        <AlertTitle>Couldn't load market overview</AlertTitle>
+        {message}
+      </Alert>
+    );
+  }
+
+  if (isLoading || !data) {
+    // Skeleton row keeps layout height stable while loading.
+    return (
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Card key={i} sx={{ flex: "1 1 180px", minWidth: 160 }}>
+            <CardContent>
+              <Skeleton width="60%" />
+              <Skeleton width="80%" height={36} />
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
     );
   }
 
@@ -62,10 +102,7 @@ export default function MarketOverview() {
         value={`$${formatCompact(g.total_market_cap.usd)}`}
         change={g.market_cap_change_percentage_24h_usd}
       />
-      <StatCard
-        label="24h Volume"
-        value={`$${formatCompact(g.total_volume.usd)}`}
-      />
+      <StatCard label="24h Volume" value={`$${formatCompact(g.total_volume.usd)}`} />
       <StatCard label="BTC Dominance" value={`${btc.toFixed(1)}%`} />
       <StatCard label="ETH Dominance" value={`${eth.toFixed(1)}%`} />
     </Box>

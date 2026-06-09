@@ -5,10 +5,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import LivePrices from "./LivePrices";
 import type { Coin } from "../api/types";
 
-// Mock the API client so the component renders deterministic data.
-vi.mock("../api/client", () => ({
-  fetchMarkets: vi.fn(),
-}));
+// Mock only the data fetcher, keeping the real ApiError export (WidgetCard uses it).
+vi.mock("../api/client", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../api/client")>();
+  return { ...actual, fetchMarkets: vi.fn() };
+});
 import { fetchMarkets } from "../api/client";
 
 const sampleCoin: Coin = {
