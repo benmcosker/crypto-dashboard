@@ -15,6 +15,11 @@ backend/bin/
 backend/tmp/
 backend/build-errors.log
 
+# Cypress artifacts
+frontend/cypress/videos/
+frontend/cypress/screenshots/
+frontend/cypress/downloads/
+
 # Editor / OS / local tooling
 .DS_Store
 .claude/

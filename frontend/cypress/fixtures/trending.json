@@ -1,0 +1,26 @@
+{
+  "coins": [
+    {
+      "item": {
+        "id": "popcat",
+        "name": "Popcat",
+        "symbol": "POPCAT",
+        "market_cap_rank": 120,
+        "thumb": "https://example.com/popcat.png",
+        "score": 0,
+        "data": { "price_change_percentage_24h": { "usd": 12.3 } }
+      }
+    },
+    {
+      "item": {
+        "id": "dogwifhat",
+        "name": "dogwifhat",
+        "symbol": "WIF",
+        "market_cap_rank": 95,
+        "thumb": "https://example.com/wif.png",
+        "score": 1,
+        "data": { "price_change_percentage_24h": { "usd": -4.2 } }
+      }
+    }
+  ]
+}

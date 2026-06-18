@@ -1,0 +1,23 @@
+[
+  {
+    "id": "binance",
+    "name": "Binance",
+    "image": "https://example.com/binance.png",
+    "trust_score_rank": 1,
+    "trade_volume_24h_btc": 149000
+  },
+  {
+    "id": "gdax",
+    "name": "Coinbase Exchange",
+    "image": "https://example.com/coinbase.png",
+    "trust_score_rank": 2,
+    "trade_volume_24h_btc": 36000
+  },
+  {
+    "id": "kraken",
+    "name": "Kraken",
+    "image": "https://example.com/kraken.png",
+    "trust_score_rank": 3,
+    "trade_volume_24h_btc": 17000
+  }
+]

@@ -299,6 +299,34 @@ Covers the formatters, the period filter interaction, the percent-change
 component, and the Live Prices widget (rendering, period-driven change column,
 row selection, and error states) with a mocked API.
 
+### End-to-end (Cypress)
+
+E2E specs drive the real UI in a browser with all `/api/*` calls stubbed via
+`cy.intercept`, so they're fast and deterministic — the Go backend doesn't need
+to run.
+
+```bash
+cd frontend
+npm run e2e              # starts the dev server, runs Cypress headlessly, exits
+npm run cy:open         # interactive runner (server must already be running)
+```
+
+Specs live in `frontend/cypress/e2e/`:
+
+- **`happy.cy.ts`** — all five widgets render with data; the price chart defaults
+  to Bitcoin / Last week; the time-period filter refetches the chart and switches
+  the table's change column; selecting a coin row or a trending coin updates the
+  chart.
+- **`sad.cy.ts`** — inline error + Retry on every widget for a 500; the global
+  error toast; a 429 rate-limit warning; a network failure; Retry recovery;
+  single-widget failure isolation; and the chart's empty-data state.
+
+**Adding a test:** stub the API with the `cy.stubHappy()` command (defined in
+`cypress/support/commands.ts`) for the success case, or override individual
+endpoints with `cy.intercept(...)` for failures — fixtures live in
+`cypress/fixtures/`. Retries are disabled automatically under Cypress so error
+states surface immediately.
+
 ---
 
 ## Production build
@@ -356,7 +384,7 @@ curl "http://localhost:8080/api/global"
 crypto-dashboard/
 ├── .env                       # COINGECKO_API_KEY (gitignored)
 ├── .env.example               # template
-├── .github/workflows/ci.yml   # CI: go test + frontend build/test
+├── .github/workflows/ci.yml   # CI: go test + frontend build/test + Cypress E2E
 ├── LICENSE                    # MIT
 ├── Makefile                   # dev / test / build tasks
 ├── README.md
@@ -374,7 +402,12 @@ crypto-dashboard/
 └── frontend/                  # React + Vite + TypeScript + MUI v6
     ├── package.json
     ├── vite.config.ts         # dev server + /api proxy + Vitest config
+    ├── cypress.config.ts      # Cypress E2E config
     ├── index.html
+    ├── cypress/
+    │   ├── e2e/               # happy.cy.ts + sad.cy.ts
+    │   ├── fixtures/          # stubbed API responses
+    │   └── support/           # commands (cy.stubHappy) + setup
     └── src/
         ├── main.tsx           # providers: Theme, QueryClient, CssBaseline
         ├── App.tsx            # layout + period/selected-coin state
@@ -406,6 +439,7 @@ Every push and pull request to `main` runs [`.github/workflows/ci.yml`](.github/
 
 - **Backend** — `go vet`, `go build`, and `go test ./... -race`.
 - **Frontend** — `npm ci`, `npm run build` (type-check + bundle), and `npm test`.
+- **E2E** — Cypress runs the `happy` and `sad` specs against the dev server.
 
 Run the same checks locally with `make test` (or `make build`).
 
