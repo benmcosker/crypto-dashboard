@@ -17,8 +17,33 @@ It surfaces five live metrics, all filterable by time period (**Today / Last wee
 
 ---
 
+## Screenshots
+
+**Dashboard overview** — all five metrics on one screen, with a time-period filter.
+
+![Crypto Dashboard overview](docs/screenshots/dashboard-overview.png)
+
+**Time-period filtering** — switching to *Last quarter* re-scales the price-history
+chart to 90 days and updates the table's change column to the matching window.
+
+![Time-period filtering (Last quarter)](docs/screenshots/price-history.png)
+
+**Graceful error handling** — when the backend or upstream API is unavailable, each
+widget shows an inline message with a Retry action, plus a single global toast.
+
+![Error and retry states](docs/screenshots/error-handling.png)
+
+**Responsive layout** — the dashboard reflows to a single column on small screens.
+
+<p align="center">
+  <img src="docs/screenshots/responsive-mobile.png" alt="Responsive mobile layout" width="320">
+</p>
+
+---
+
 ## Table of contents
 
+- [Screenshots](#screenshots)
 - [How it works](#how-it-works)
 - [Prerequisites](#prerequisites)
 - [Getting an API key](#getting-an-api-key)
