@@ -20,6 +20,7 @@ It surfaces five live metrics, all filterable by time period (**Today / Last wee
 ## Table of contents
 
 - [Screenshots](#screenshots)
+- [Time-period behavior](#time-period-behavior)
 - [How it works](#how-it-works)
 - [Prerequisites](#prerequisites)
 - [Getting an API key](#getting-an-api-key)
@@ -29,7 +30,6 @@ It surfaces five live metrics, all filterable by time period (**Today / Last wee
 - [Production build](#production-build)
 - [API reference](#api-reference)
 - [Project structure](#project-structure)
-- [Time-period behavior](#time-period-behavior)
 - [Troubleshooting](#troubleshooting)
 
 ---
@@ -55,6 +55,21 @@ widget shows an inline message with a Retry action, plus a single global toast.
 <p align="center">
   <img src="docs/screenshots/responsive-mobile.png" alt="Responsive mobile layout" width="320">
 </p>
+
+---
+
+## Time-period behavior
+
+The period filter (Today / Last week / Last month / Last quarter) maps to
+`1 / 7 / 30 / 90` days. Not every metric has a historical dimension, so the
+filter applies where it's meaningful and the rest stay live:
+
+- **Price-history chart** — uses the full day range for the selected period.
+- **Live Prices % column** — uses CoinGecko's native change windows
+  (24h / 7d / 30d). "Last quarter" has **no native 90-day window**, so the table
+  shows the 30d change while the chart still renders the full 90 days.
+- **Market overview, Trending, Exchange volume** — live snapshots with no
+  historical dimension, so they stay current regardless of the selected period.
 
 ---
 
@@ -369,21 +384,6 @@ crypto-dashboard/
         ├── utils/             # formatters (+ tests)
         └── test/setup.ts      # jsdom test setup
 ```
-
----
-
-## Time-period behavior
-
-The period filter (Today / Last week / Last month / Last quarter) maps to
-`1 / 7 / 30 / 90` days. Not every metric has a historical dimension, so the
-filter applies where it's meaningful and the rest stay live:
-
-- **Price-history chart** — uses the full day range for the selected period.
-- **Live Prices % column** — uses CoinGecko's native change windows
-  (24h / 7d / 30d). "Last quarter" has **no native 90-day window**, so the table
-  shows the 30d change while the chart still renders the full 90 days.
-- **Market overview, Trending, Exchange volume** — live snapshots with no
-  historical dimension, so they stay current regardless of the selected period.
 
 ---
 
