@@ -17,6 +17,23 @@ It surfaces five live metrics, all filterable by time period (**Today / Last wee
 
 ---
 
+## Table of contents
+
+- [Screenshots](#screenshots)
+- [How it works](#how-it-works)
+- [Prerequisites](#prerequisites)
+- [Getting an API key](#getting-an-api-key)
+- [Configuration](#configuration)
+- [Running the app](#running-the-app)
+- [Running the tests](#running-the-tests)
+- [Production build](#production-build)
+- [API reference](#api-reference)
+- [Project structure](#project-structure)
+- [Time-period behavior](#time-period-behavior)
+- [Troubleshooting](#troubleshooting)
+
+---
+
 ## Screenshots
 
 **Dashboard overview** — all five metrics on one screen, with a time-period filter.
@@ -38,23 +55,6 @@ widget shows an inline message with a Retry action, plus a single global toast.
 <p align="center">
   <img src="docs/screenshots/responsive-mobile.png" alt="Responsive mobile layout" width="320">
 </p>
-
----
-
-## Table of contents
-
-- [Screenshots](#screenshots)
-- [How it works](#how-it-works)
-- [Prerequisites](#prerequisites)
-- [Getting an API key](#getting-an-api-key)
-- [Configuration](#configuration)
-- [Running the app](#running-the-app)
-- [Running the tests](#running-the-tests)
-- [Production build](#production-build)
-- [API reference](#api-reference)
-- [Project structure](#project-structure)
-- [Time-period behavior](#time-period-behavior)
-- [Troubleshooting](#troubleshooting)
 
 ---
 
